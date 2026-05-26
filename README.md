@@ -139,10 +139,10 @@ CREATE TABLE blockchain (
 );
 ```
 
-### 5. Chạy ứng dụng
+### 4.5. Chạy ứng dụng
 
 ```bash
-node app.js
+npm  run dev
 ```
 
 Truy cập tại: [http://localhost:3000](http://localhost:3000)
