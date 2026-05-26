@@ -1,8 +1,25 @@
-# Warehouse Blockchain
+<h2 align="center">
+    <a href="https://dainam.edu.vn/vi/khoa-cong-nghe-thong-tin">
+    🎓 Faculty of Information Technology (DaiNam University)
+    </a>
+</h2>
+<h2 align="center">
+   Hệ thống quản lý kho hàng ứng dụng Blockchain
+</h2>
+<div align="center">
+    <p align="center">
+        <img src="https://github.com/user-attachments/assets/ee72b1c4-04c7-4e4b-8d7a-8cf16932804a" width="170" />
+        <img src="https://github.com/user-attachments/assets/1459f5bf-7fc9-4462-996d-eb1ef7633a97" width="180" />
+        <img src="https://github.com/user-attachments/assets/f081d02c-b644-4e87-a40c-fcb8383c2985" width="200" />
+    </p>
 
-Hệ thống quản lý kho hàng tích hợp Blockchain, xây dựng bằng Node.js + Express + MySQL.
+[![AIoTLab](https://img.shields.io/badge/AIoTLab-green?style=for-the-badge)](https://www.facebook.com/DNUAIoTLab)
+[![Faculty of Information Technology](https://img.shields.io/badge/Faculty%20of%20Information%20Technology-blue?style=for-the-badge)](https://dainam.edu.vn/vi/khoa-cong-nghe-thong-tin)
+[![DaiNam University](https://img.shields.io/badge/DaiNam%20University-orange?style=for-the-badge)](https://dainam.edu.vn)
 
-## Tính năng
+</div>
+
+## 1. Tính năng
 
 - **Xác thực người dùng**: Đăng nhập/đăng xuất với mật khẩu được mã hóa bằng bcrypt
 - **Phân quyền**: Hai vai trò `admin` và `user`
@@ -16,7 +33,7 @@ Hệ thống quản lý kho hàng tích hợp Blockchain, xây dựng bằng Nod
   - Ký số bằng thuật toán ECDSA (P-256)
   - Xác thực toàn vẹn chuỗi khối
 
-## Công nghệ sử dụng
+## 2. Công nghệ sử dụng
 
 | Thành phần | Công nghệ |
 |---|---|
@@ -28,27 +45,27 @@ Hệ thống quản lý kho hàng tích hợp Blockchain, xây dựng bằng Nod
 | Blockchain | Node.js crypto (SHA-256, ECDSA P-256) |
 | Environment | dotenv |
 
-## Yêu cầu
+## 3. Yêu cầu
 
 - Node.js >= 18
 - MySQL >= 8.0
 
-## Cài đặt
+## 4. Cài đặt
 
-### 1. Clone repository
+### 4.1. Clone repository
 
 ```bash
 git clone <repository-url>
 cd warehouse-blockchain
 ```
 
-### 2. Cài đặt dependencies
+### 4.2. Cài đặt dependencies
 
 ```bash
 npm install
 ```
 
-### 3. Cấu hình biến môi trường
+### 4.3. Cấu hình biến môi trường
 
 Tạo file `.env` ở thư mục gốc:
 
@@ -61,7 +78,7 @@ SESSION_SECRET=your_secret_key
 PORT=3000
 ```
 
-### 4. Khởi tạo database
+### 4.4. Khởi tạo database
 
 Tạo database MySQL và các bảng cần thiết:
 
@@ -130,7 +147,7 @@ node app.js
 
 Truy cập tại: [http://localhost:3000](http://localhost:3000)
 
-## Cấu trúc thư mục
+## 5. Cấu trúc thư mục
 
 ```
 warehouse-blockchain/
@@ -168,7 +185,7 @@ warehouse-blockchain/
     └── blockchain/
 ```
 
-## Phân quyền
+## 6. Phân quyền
 
 | Chức năng | user | admin |
 |---|:---:|:---:|
@@ -179,7 +196,7 @@ warehouse-blockchain/
 | Xem blockchain | ✓ | ✓ |
 | Quản lý người dùng | ✗ | ✓ |
 
-## Blockchain hoạt động như thế nào
+## 7. Blockchain hoạt động như thế nào
 
 Mỗi giao dịch nhập/xuất kho sẽ tạo ra một khối mới trong chuỗi:
 
