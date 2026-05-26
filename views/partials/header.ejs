@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= typeof title !== 'undefined' ? title : 'Quản lý Kho Blockchain' %></title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<% const _cp = typeof currentPath !== 'undefined' ? currentPath : ''; %>
+<div class="layout">
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <h2>Quản lý Kho</h2>
+            <span>Hệ thống Blockchain</span>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="nav-section">Tổng quan</div>
+            <a href="/dashboard" class="nav-link <%= _cp === '/dashboard' ? 'active' : '' %>">
+                <span class="nav-dot"></span> Tổng quan
+            </a>
+            <div class="nav-section">Kho hàng</div>
+            <a href="/products" class="nav-link <%= _cp.startsWith('/products') ? 'active' : '' %>">
+                <span class="nav-dot"></span> Sản phẩm
+            </a>
+            <a href="/inventory" class="nav-link <%= _cp === '/inventory' ? 'active' : '' %>">
+                <span class="nav-dot"></span> Tồn kho
+            </a>
+            <a href="/imports" class="nav-link <%= _cp.startsWith('/imports') ? 'active' : '' %>">
+                <span class="nav-dot"></span> Nhập kho
+            </a>
+            <a href="/exports" class="nav-link <%= _cp.startsWith('/exports') ? 'active' : '' %>">
+                <span class="nav-dot"></span> Xuất kho
+            </a>
+            <div class="nav-section">Blockchain</div>
+            <a href="/blockchain" class="nav-link <%= _cp.startsWith('/blockchain') ? 'active' : '' %>">
+                <span class="nav-dot"></span> Lịch sử giao dịch
+            </a>
+            <% if (user.role === 'admin') { %>
+            <div class="nav-section">Quản trị</div>
+            <a href="/users" class="nav-link <%= _cp === '/users' ? 'active' : '' %>">
+                <span class="nav-dot"></span> Người dùng
+            </a>
+            <% } %>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="sidebar-user">
+                <strong><%= user.fullname %></strong>
+                <span class="role-badge <%= user.role === 'admin' ? '' : 'staff' %>"><%= user.role === 'admin' ? 'Quản trị viên' : 'Nhân viên kho' %></span>
+            </div>
+            <a href="/logout"><button class="btn-logout">Đăng xuất</button></a>
+        </div>
+    </aside>
+    <div class="main-content">
+        <div class="topbar">
+            <h1><%= typeof title !== 'undefined' ? title : '' %></h1>
+        </div>
+        <div class="page-content">

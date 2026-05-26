@@ -1,0 +1,55 @@
+<%- include('../partials/header') %>
+
+<div class="card" style="max-width:480px;margin-bottom:20px">
+    <div class="card-header">
+        <h3>Thông tin sản phẩm</h3>
+        <a href="/blockchain" class="btn btn-outline btn-sm">Quay lại</a>
+    </div>
+    <div class="card-body">
+        <table style="width:100%">
+            <tr><td style="color:#6b7280;padding:5px 0;width:90px">Mã SP</td><td><code><%= product.code %></code></td></tr>
+            <tr><td style="color:#6b7280;padding:5px 0">Tên</td><td><strong><%= product.name %></strong></td></tr>
+            <tr><td style="color:#6b7280;padding:5px 0">Tồn kho</td><td><%= product.stock.toLocaleString() %></td></tr>
+        </table>
+    </div>
+</div>
+
+<% if (transactions.length === 0) { %>
+<div class="card card-body empty-state">Không có giao dịch nào trên blockchain cho sản phẩm này</div>
+<% } else { %>
+<div class="card" style="margin-bottom:16px">
+    <div class="card-header">
+        <h3>Lịch sử giao dịch trên Blockchain</h3>
+        <span class="badge badge-gray"><%= transactions.length %> giao dịch</span>
+    </div>
+</div>
+<% transactions.slice().reverse().forEach(block => { %>
+<div class="blockchain-block">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <span class="block-index">Khối #<%= block.block_index %></span>
+        <% if (block.data.transaction_type === 'IMPORT') { %>
+        <span class="block-type-import">NHẬP KHO +<%= block.data.quantity %></span>
+        <% } else { %>
+        <span class="block-type-export">XUẤT KHO -<%= block.data.quantity %></span>
+        <% } %>
+    </div>
+    <div style="font-size:13px;margin-bottom:6px">
+        Người thực hiện: <strong><%= block.data.performed_by %></strong>
+        <% if (block.data.note) { %>&nbsp;&mdash;&nbsp;<%= block.data.note %><% } %>
+    </div>
+    <div style="font-size:11px;color:#9ca3af;margin-bottom:6px"><%= new Date(block.timestamp).toLocaleString('vi-VN') %></div>
+    <div style="font-size:11px;color:#6b7280;margin-bottom:4px">Hash: <span class="block-hash"><%= block.hash %></span></div>
+    <div style="display:flex;gap:10px;font-size:11px;flex-wrap:wrap">
+        <span style="color:#6b7280">Nonce: <strong><%= block.nonce %></strong></span>
+        <% if (block.signature) { %>
+        <span style="color:#16a34a;font-weight:600">✓ Đã ký số</span>
+        <% } %>
+        <% if (block.tx_id) { %>
+        <span style="color:#6b7280">TX: <code style="font-size:10px"><%= block.tx_id.substring(0,18) %>...</code></span>
+        <% } %>
+    </div>
+</div>
+<% }) %>
+<% } %>
+
+<%- include('../partials/footer') %>

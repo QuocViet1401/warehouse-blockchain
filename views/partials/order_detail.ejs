@@ -1,0 +1,162 @@
+<%# Dùng chung cho imports/detail và exports/detail %>
+<%# Cần truyền: order, block, hashValid, sigValid, orderType ('IMPORT'|'EXPORT'), backUrl %>
+
+<div style="max-width:740px">
+
+  <!-- Thông tin phiếu -->
+  <div class="card" style="margin-bottom:20px">
+    <div class="card-header">
+      <h3><%= orderType === 'IMPORT' ? 'Phiếu nhập kho' : 'Phiếu xuất kho' %> #<%= order.id %></h3>
+      <div style="display:flex;gap:8px;align-items:center">
+        <% if (orderType === 'IMPORT') { %>
+        <span class="badge badge-green">NHẬP KHO</span>
+        <% } else { %>
+        <span class="badge badge-red">XUẤT KHO</span>
+        <% } %>
+        <a href="<%= backUrl %>" class="btn btn-outline btn-sm">← Quay lại</a>
+      </div>
+    </div>
+    <div class="card-body">
+      <table style="width:100%;border-collapse:collapse;font-size:14px">
+        <tr>
+          <td style="color:#6b7280;padding:9px 0;width:160px">Sản phẩm</td>
+          <td><strong><%= order.product_name %></strong>&nbsp;&nbsp;<code><%= order.product_code %></code></td>
+        </tr>
+        <tr style="border-top:1px solid #f3f4f6">
+          <td style="color:#6b7280;padding:9px 0">Số lượng</td>
+          <td>
+            <% if (orderType === 'IMPORT') { %>
+            <span class="badge badge-green" style="font-size:14px;padding:4px 14px">+<%= order.quantity.toLocaleString() %></span>
+            <% } else { %>
+            <span class="badge badge-red" style="font-size:14px;padding:4px 14px">-<%= order.quantity.toLocaleString() %></span>
+            <% } %>
+          </td>
+        </tr>
+        <tr style="border-top:1px solid #f3f4f6">
+          <td style="color:#6b7280;padding:9px 0">Người lập phiếu</td>
+          <td><%= order.created_by_name %>&nbsp;<span style="color:#9ca3af">(<code><%= order.created_by_username %></code>)</span></td>
+        </tr>
+        <tr style="border-top:1px solid #f3f4f6">
+          <td style="color:#6b7280;padding:9px 0">Thời gian tạo</td>
+          <td><%= new Date(order.created_at).toLocaleString('vi-VN') %></td>
+        </tr>
+        <tr style="border-top:1px solid #f3f4f6">
+          <td style="color:#6b7280;padding:9px 0;vertical-align:top">Ghi chú</td>
+          <td><%= order.note || '(Không có ghi chú)' %></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- Thông tin Blockchain -->
+  <% if (!block) { %>
+  <div class="card card-body" style="text-align:center;color:#6b7280;padding:30px">
+    Không tìm thấy dữ liệu blockchain cho phiếu này
+  </div>
+  <% } else { %>
+  <div class="card">
+    <div class="card-header">
+      <h3>Thông tin Blockchain</h3>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <% if (hashValid) { %>
+        <span style="color:#16a34a;font-weight:700;font-size:13px">✓ Hash hợp lệ</span>
+        <% } else { %>
+        <span style="color:#dc2626;font-weight:700;font-size:13px">✗ Hash bị xâm phạm!</span>
+        <% } %>
+        <% if (sigValid === true) { %>
+        <span style="color:#16a34a;font-weight:700;font-size:13px">✓ Chữ ký hợp lệ</span>
+        <% } else if (sigValid === false) { %>
+        <span style="color:#dc2626;font-weight:700;font-size:13px">✗ Chữ ký sai!</span>
+        <% } %>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <table style="width:100%;border-collapse:collapse;font-size:13px">
+        <tr>
+          <td style="color:#6b7280;padding:9px 0;width:170px;font-weight:600">Số khối (Index)</td>
+          <td style="font-size:20px;font-weight:800;color:#1a1a2e">#<%= block.block_index %></td>
+        </tr>
+        <tr style="border-top:1px solid #f3f4f6">
+          <td style="color:#6b7280;padding:9px 0;vertical-align:top">Transaction ID</td>
+          <td style="padding:9px 0">
+            <% if (block.tx_id) { %>
+            <code style="font-size:12px;word-break:break-all;color:#4f46e5"><%= block.tx_id %></code>
+            <% } else { %>
+            <span style="color:#9ca3af;font-size:12px">(block cũ — không có TX ID)</span>
+            <% } %>
+          </td>
+        </tr>
+        <tr style="border-top:1px solid #f3f4f6">
+          <td style="color:#6b7280;padding:9px 0">Thời gian ghi chuỗi</td>
+          <td><%= new Date(block.timestamp).toLocaleString('vi-VN') %></td>
+        </tr>
+        <tr style="border-top:1px solid #f3f4f6">
+          <td style="color:#6b7280;padding:9px 0;vertical-align:top">Hash khối này</td>
+          <td style="padding:9px 0">
+            <code style="font-size:11px;word-break:break-all;color:<%= hashValid ? '#16a34a' : '#dc2626' %>"><%= block.hash %></code>
+          </td>
+        </tr>
+        <tr style="border-top:1px solid #f3f4f6">
+          <td style="color:#6b7280;padding:9px 0;vertical-align:top">Hash khối trước</td>
+          <td style="padding:9px 0">
+            <code style="font-size:11px;word-break:break-all;color:#6b7280"><%= block.previous_hash %></code>
+          </td>
+        </tr>
+        <tr style="border-top:1px solid #f3f4f6">
+          <td style="color:#6b7280;padding:9px 0">Proof of Work</td>
+          <td>
+            <% if (block.nonce > 0) { %>
+            <span style="font-weight:700;color:#1a1a2e"><%= block.nonce.toLocaleString() %></span>
+            <span style="color:#6b7280"> lần thử &nbsp;·&nbsp; độ khó: hash bắt đầu bằng <code>000</code></span>
+            <% } else { %>
+            <span style="color:#9ca3af;font-size:12px">Nonce = 0 (block cũ — chưa dùng PoW)</span>
+            <% } %>
+          </td>
+        </tr>
+        <tr style="border-top:1px solid #f3f4f6">
+          <td style="color:#6b7280;padding:9px 0;vertical-align:top">Chữ ký số (ECDSA)</td>
+          <td style="padding:9px 0">
+            <% if (block.signature) { %>
+              <% if (sigValid === true) { %>
+              <div style="margin-bottom:6px"><span class="badge badge-green">✓ Đã xác minh — ECDSA P-256</span></div>
+              <% } else { %>
+              <div style="margin-bottom:6px"><span class="badge badge-red">✗ Chữ ký không hợp lệ</span></div>
+              <% } %>
+              <code style="font-size:10px;color:#9ca3af;word-break:break-all"><%= block.signature.substring(0, 96) %>...</code>
+            <% } else { %>
+            <span style="color:#9ca3af;font-size:12px">(block cũ — không có chữ ký số)</span>
+            <% } %>
+          </td>
+        </tr>
+        <% if (block.data && block.data.public_key) { %>
+        <tr style="border-top:1px solid #f3f4f6">
+          <td style="color:#6b7280;padding:9px 0;vertical-align:top">Public Key</td>
+          <td style="padding:9px 0">
+            <code style="font-size:10px;color:#9ca3af;word-break:break-all"><%= block.data.public_key.replace(/-----[A-Z\s]+-----/g, '').replace(/\n/g,'').trim().substring(0,88) %>...</code>
+          </td>
+        </tr>
+        <% } %>
+      </table>
+    </div>
+
+    <!-- Raw JSON block data -->
+    <div style="padding:14px 20px;border-top:1px solid #f3f4f6;background:#f9fafb;border-radius:0 0 8px 8px">
+      <div style="font-size:11px;color:#9ca3af;margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:.5px">Raw Data — dữ liệu gốc được hash trong block</div>
+      <div style="background:#0f172a;padding:14px;border-radius:6px;overflow-x:auto">
+        <pre style="font-size:11px;color:#a5b4fc;margin:0;white-space:pre-wrap;word-break:break-all"><%= JSON.stringify({
+  order_id:         block.data.order_id,
+  transaction_type: block.data.transaction_type,
+  product_code:     block.data.product_code,
+  product_name:     block.data.product_name,
+  quantity:         block.data.quantity,
+  note:             block.data.note,
+  performed_by:     block.data.performed_by,
+  tx_id:            block.data.tx_id
+}, null, 2) %></pre>
+      </div>
+    </div>
+  </div>
+  <% } %>
+
+</div>

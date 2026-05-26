@@ -1,0 +1,79 @@
+<%- include('../partials/header') %>
+
+<div style="display:grid;grid-template-columns:1fr 360px;gap:20px;align-items:start">
+    <div class="card">
+        <div class="card-header">
+            <h3>Danh sách người dùng</h3>
+        </div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tên đăng nhập</th>
+                        <th>Họ tên</th>
+                        <th>Vai trò</th>
+                        <th>Ngày tạo</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% users.forEach(u => { %>
+                    <tr>
+                        <td><code><%= u.username %></code></td>
+                        <td><strong><%= u.fullname %></strong></td>
+                        <td>
+                            <% if (u.role === 'admin') { %>
+                            <span class="badge badge-red">Quản trị viên</span>
+                            <% } else { %>
+                            <span class="badge badge-green">Nhân viên kho</span>
+                            <% } %>
+                        </td>
+                        <td><%= new Date(u.created_at).toLocaleDateString('vi-VN') %></td>
+                        <td>
+                            <% if (u.id !== user.id) { %>
+                            <form method="POST" action="/users/delete/<%= u.id %>" onsubmit="return confirm('Xác nhận xóa người dùng này?')">
+                                <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                            </form>
+                            <% } else { %>
+                            <span style="font-size:12px;color:#9ca3af">Tài khoản hiện tại</span>
+                            <% } %>
+                        </td>
+                    </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header"><h3>Thêm người dùng mới</h3></div>
+        <div class="card-body">
+            <% if (error) { %><div class="alert alert-danger"><%= error %></div><% } %>
+            <% if (success) { %><div class="alert alert-success"><%= success %></div><% } %>
+            <form method="POST" action="/users/add">
+                <div class="form-group">
+                    <label class="form-label">Tên đăng nhập *</label>
+                    <input type="text" name="username" class="form-control" required placeholder="Nhập tên đăng nhập">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Họ tên *</label>
+                    <input type="text" name="fullname" class="form-control" required placeholder="Nhập họ tên">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Mật khẩu *</label>
+                    <input type="password" name="password" class="form-control" required placeholder="Nhập mật khẩu" minlength="6">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Vai trò *</label>
+                    <select name="role" class="form-control" required>
+                        <option value="staff">Nhân viên kho</option>
+                        <option value="admin">Quản trị viên</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Thêm người dùng</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,66 @@
+<%- include('../partials/header') %>
+
+<div class="card" style="margin-bottom:20px">
+    <div class="card-header">
+        <h3>Trạng thái chuỗi Blockchain</h3>
+        <% if (isValid) { %>
+        <span class="chain-valid">Chuỗi hợp lệ</span>
+        <% } else { %>
+        <span class="chain-valid chain-invalid">Chuỗi bị xâm phạm</span>
+        <% } %>
+    </div>
+    <div class="card-body">
+        <p style="font-size:13px;color:#6b7280">Tổng số khối: <strong style="color:#111827"><%= chain.length %></strong></p>
+    </div>
+</div>
+
+<% if (chain.length === 0) { %>
+<div class="empty-state card card-body">Chưa có giao dịch nào được lưu trên blockchain</div>
+<% } %>
+
+<% chain.slice().reverse().forEach(block => { %>
+<div class="blockchain-block">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <span class="block-index">Khối #<%= block.block_index %></span>
+        <% if (block.data && block.data.transaction_type === 'IMPORT') { %>
+        <span class="block-type-import">NHẬP KHO</span>
+        <% } else if (block.data && block.data.transaction_type === 'EXPORT') { %>
+        <span class="block-type-export">XUẤT KHO</span>
+        <% } else { %>
+        <span style="color:#6b7280;font-size:12px">GENESIS</span>
+        <% } %>
+    </div>
+    <% if (block.data && block.data.product_code) { %>
+    <div style="margin-bottom:8px;font-size:13px">
+        <strong><%= block.data.product_name %></strong>
+        <span style="color:#6b7280;margin-left:8px">(<%= block.data.product_code %>)</span>
+        &nbsp;&mdash;&nbsp;
+        Số lượng: <strong><%= block.data.quantity %></strong>
+        &nbsp;&mdash;&nbsp;
+        Người thực hiện: <strong><%= block.data.performed_by %></strong>
+    </div>
+    <% } %>
+    <div style="font-size:11px;color:#9ca3af;margin-bottom:6px">
+        <%= new Date(block.timestamp).toLocaleString('vi-VN') %>
+    </div>
+    <div style="margin-bottom:4px;font-size:11px;color:#6b7280">
+        Hash: <span class="block-hash"><%= block.hash %></span>
+    </div>
+    <div style="font-size:11px;color:#6b7280;margin-bottom:4px">
+        Prev: <span class="block-hash"><%= block.previous_hash %></span>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;font-size:11px;margin-top:6px">
+        <% if (block.tx_id) { %>
+        <span style="color:#6b7280">TX: <code style="font-size:10px"><%= block.tx_id.substring(0,18) %>...</code></span>
+        <% } %>
+        <span style="color:#6b7280">Nonce: <strong><%= block.nonce %></strong></span>
+        <% if (block.signature) { %>
+        <span style="color:#16a34a;font-weight:600">✓ Đã ký số</span>
+        <% } else { %>
+        <span style="color:#9ca3af">Chưa ký</span>
+        <% } %>
+    </div>
+</div>
+<% }) %>
+
+<%- include('../partials/footer') %>

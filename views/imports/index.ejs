@@ -1,0 +1,43 @@
+<%- include('../partials/header') %>
+
+<div class="card">
+    <div class="card-header">
+        <h3>Danh sách phiếu nhập kho</h3>
+        <a href="/imports/add" class="btn btn-success btn-sm">Tạo phiếu nhập</a>
+    </div>
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Mã SP</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Số lượng nhập</th>
+                    <th>Ghi chú</th>
+                    <th>Người tạo</th>
+                    <th>Thời gian</th>
+                    <th>Chi tiết</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (orders.length === 0) { %>
+                <tr><td colspan="8" class="empty-state">Chưa có phiếu nhập nào</td></tr>
+                <% } %>
+                <% orders.forEach((o, i) => { %>
+                <tr>
+                    <td><%= i + 1 %></td>
+                    <td><code><%= o.product_code %></code></td>
+                    <td><%= o.product_name %></td>
+                    <td><span class="badge badge-green">+<%= o.quantity.toLocaleString() %></span></td>
+                    <td><%= o.note || '-' %></td>
+                    <td><%= o.created_by_name %></td>
+                    <td><%= new Date(o.created_at).toLocaleString('vi-VN') %></td>
+                    <td><a href="/imports/<%= o.id %>" class="btn btn-outline btn-sm">Xem</a></td>
+                </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>

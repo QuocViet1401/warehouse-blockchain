@@ -1,0 +1,59 @@
+<%- include('../partials/header') %>
+
+<% if (low_stock.length > 0) { %>
+<div class="alert alert-warning">
+    Cảnh báo: Có <strong><%= low_stock.length %></strong> sản phẩm có tồn kho dưới 10 đơn vị.
+</div>
+<% } %>
+
+<div class="card">
+    <div class="card-header">
+        <h3>Tổng quan tồn kho</h3>
+    </div>
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Mã SP</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Loại</th>
+                    <th>Tồn kho</th>
+                    <th>Giá trị tồn</th>
+                    <th>Trạng thái</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (products.length === 0) { %>
+                <tr><td colspan="7" class="empty-state">Không có sản phẩm nào</td></tr>
+                <% } %>
+                <% products.forEach(p => { %>
+                <tr>
+                    <td><code><%= p.code %></code></td>
+                    <td><strong><%= p.name %></strong></td>
+                    <td><span class="badge badge-gray"><%= p.category || '-' %></span></td>
+                    <td class="<%= p.stock <= 10 ? 'stock-low' : 'stock-ok' %>"><strong><%= p.stock.toLocaleString() %></strong></td>
+                    <td><%= (p.stock * p.price).toLocaleString('vi-VN') %> đ</td>
+                    <td>
+                        <% if (p.stock === 0) { %>
+                        <span class="badge badge-red">Hết hàng</span>
+                        <% } else if (p.stock <= 10) { %>
+                        <span class="badge badge-yellow">Sắp hết</span>
+                        <% } else { %>
+                        <span class="badge badge-green">Còn hàng</span>
+                        <% } %>
+                    </td>
+                    <td>
+                        <div class="actions">
+                            <a href="/imports/add" class="btn btn-success btn-sm">Nhập</a>
+                            <a href="/exports/add" class="btn btn-outline btn-sm">Xuất</a>
+                        </div>
+                    </td>
+                </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>

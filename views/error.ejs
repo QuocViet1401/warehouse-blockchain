@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Lỗi - Quản lý Kho Blockchain</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body style="background:#f4f6f9;display:flex;align-items:center;justify-content:center;min-height:100vh">
+    <div style="text-align:center">
+        <div style="font-size:48px;font-weight:700;color:#1a1a2e">Lỗi</div>
+        <p style="color:#6b7280;margin:8px 0 20px"><%= message %></p>
+        <% if (user) { %>
+        <a href="/dashboard" class="btn btn-primary">Quay về Trang chủ</a>
+        <% } else { %>
+        <a href="/login" class="btn btn-primary">Đăng nhập</a>
+        <% } %>
+    </div>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<%- include('../partials/header') %>
+
+<div class="card">
+    <div class="card-header">
+        <h3>Danh sách sản phẩm</h3>
+        <% if (user.role === 'admin') { %>
+        <a href="/products/add" class="btn btn-primary btn-sm">Thêm sản phẩm</a>
+        <% } %>
+    </div>
+    <div class="card-body" style="padding-bottom:0">
+        <form method="GET" action="/products" class="search-bar">
+            <input type="text" name="search" class="form-control" placeholder="Tìm kiếm mã, tên sản phẩm..." value="<%= search %>">
+            <select name="category" class="form-control" style="width:180px;flex:none">
+                <option value="">Tất cả loại</option>
+                <% categories.forEach(c => { %>
+                <option value="<%= c.category %>" <%= category === c.category ? 'selected' : '' %>><%= c.category %></option>
+                <% }) %>
+            </select>
+            <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+            <a href="/products" class="btn btn-outline">Xóa bộ lọc</a>
+        </form>
+    </div>
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Mã SP</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Loại</th>
+                    <th>Tồn kho</th>
+                    <th>Giá</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (products.length === 0) { %>
+                <tr><td colspan="6" class="empty-state">Không có sản phẩm nào</td></tr>
+                <% } %>
+                <% products.forEach(p => { %>
+                <tr>
+                    <td><code><%= p.code %></code></td>
+                    <td><strong><%= p.name %></strong></td>
+                    <td><span class="badge badge-gray"><%= p.category || '-' %></span></td>
+                    <td class="<%= p.stock <= 10 ? 'stock-low' : 'stock-ok' %>"><%= p.stock.toLocaleString() %></td>
+                    <td><%= Number(p.price).toLocaleString('vi-VN') %> đ</td>
+                    <td>
+                        <div class="actions">
+                            <a href="/products/detail/<%= p.id %>" class="btn btn-outline btn-sm">Chi tiết</a>
+                            <% if (user.role === 'admin') { %>
+                            <a href="/products/edit/<%= p.id %>" class="btn btn-outline btn-sm">Sửa</a>
+                            <form method="POST" action="/products/delete/<%= p.id %>" style="display:inline" onsubmit="return confirm('Xác nhận xóa sản phẩm này?')">
+                                <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                            </form>
+                            <% } %>
+                        </div>
+                    </td>
+                </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>

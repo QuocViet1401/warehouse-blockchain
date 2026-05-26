@@ -1,0 +1,75 @@
+<%- include('../partials/header') %>
+
+<div style="display:grid;grid-template-columns:340px 1fr;gap:20px;align-items:start">
+    <div class="card">
+        <div class="card-header">
+            <h3>Thông tin sản phẩm</h3>
+            <% if (user.role === 'admin') { %>
+            <a href="/products/edit/<%= product.id %>" class="btn btn-outline btn-sm">Sửa</a>
+            <% } %>
+        </div>
+        <div class="card-body">
+            <table style="width:100%">
+                <tr><td style="color:#6b7280;padding:6px 0;width:100px">Mã SP</td><td><code><%= product.code %></code></td></tr>
+                <tr><td style="color:#6b7280;padding:6px 0">Tên</td><td><strong><%= product.name %></strong></td></tr>
+                <tr><td style="color:#6b7280;padding:6px 0">Loại</td><td><%= product.category || '-' %></td></tr>
+                <tr><td style="color:#6b7280;padding:6px 0">Tồn kho</td><td class="<%= product.stock <= 10 ? 'stock-low' : 'stock-ok' %>"><strong><%= product.stock.toLocaleString() %></strong></td></tr>
+                <tr><td style="color:#6b7280;padding:6px 0">Giá</td><td><%= Number(product.price).toLocaleString('vi-VN') %> đ</td></tr>
+            </table>
+            <div style="margin-top:16px;display:flex;gap:8px">
+                <a href="/imports/add" class="btn btn-success btn-sm">Nhập kho</a>
+                <a href="/exports/add" class="btn btn-danger btn-sm">Xuất kho</a>
+                <a href="/blockchain/product/<%= product.id %>" class="btn btn-primary btn-sm">Blockchain</a>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div class="card">
+            <div class="card-header"><h3>Lịch sử nhập kho</h3></div>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>Số lượng</th><th>Ghi chú</th><th>Người tạo</th><th>Thời gian</th></tr></thead>
+                    <tbody>
+                        <% if (import_history.length === 0) { %>
+                        <tr><td colspan="4" class="empty-state">Chưa có lịch sử nhập</td></tr>
+                        <% } %>
+                        <% import_history.forEach(h => { %>
+                        <tr>
+                            <td><span class="badge badge-green">+<%= h.quantity %></span></td>
+                            <td><%= h.note || '-' %></td>
+                            <td><%= h.created_by_name %></td>
+                            <td><%= new Date(h.created_at).toLocaleString('vi-VN') %></td>
+                        </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header"><h3>Lịch sử xuất kho</h3></div>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>Số lượng</th><th>Ghi chú</th><th>Người tạo</th><th>Thời gian</th></tr></thead>
+                    <tbody>
+                        <% if (export_history.length === 0) { %>
+                        <tr><td colspan="4" class="empty-state">Chưa có lịch sử xuất</td></tr>
+                        <% } %>
+                        <% export_history.forEach(h => { %>
+                        <tr>
+                            <td><span class="badge badge-red">-<%= h.quantity %></span></td>
+                            <td><%= h.note || '-' %></td>
+                            <td><%= h.created_by_name %></td>
+                            <td><%= new Date(h.created_at).toLocaleString('vi-VN') %></td>
+                        </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<a href="/products" class="btn btn-outline" style="margin-top:4px">Quay lại</a>
+
+<%- include('../partials/footer') %>

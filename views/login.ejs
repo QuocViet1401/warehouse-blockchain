@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập - Quản lý Kho Blockchain</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="login-page">
+    <div class="login-box">
+        <h2>Quản lý Kho Blockchain</h2>
+        <p>Đăng nhập vào hệ thống</p>
+        <% if (error) { %>
+            <div class="alert alert-danger"><%= error %></div>
+        <% } %>
+        <form method="POST" action="/login">
+            <div class="form-group">
+                <label class="form-label">Tên đăng nhập</label>
+                <input type="text" name="username" class="form-control" placeholder="Nhập tên đăng nhập" required autofocus>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Mật khẩu</label>
+                <input type="password" name="password" class="form-control" placeholder="Nhập mật khẩu" required>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:11px;">Đăng nhập</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
