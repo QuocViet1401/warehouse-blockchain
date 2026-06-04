@@ -55,7 +55,7 @@
 ### 4.1. Clone repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/QuocViet1401/warehouse-blockchain.git
 cd warehouse-blockchain
 ```
 
