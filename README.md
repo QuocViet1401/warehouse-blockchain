@@ -19,6 +19,9 @@
 
 </div>
 
+## Poster!
+![Poster](Poster.jpg)
+
 ## 1. Tính năng
 
 - **Xác thực người dùng**: Đăng nhập/đăng xuất với mật khẩu được mã hóa bằng bcrypt
